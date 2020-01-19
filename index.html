@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>DesignPage</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <!--CSS RESET-->
+    <link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css">
+    <!--演示页面样式，使用时可以不引用-->
+    <style media="screen">
+        /*简单reset*/
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /*必须，关系到单个page能否全屏显示*/
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            font-size: 16px;
+        }
+
+        #container,
+        .sections,
+        .section {
+            /*必须，兼容，在浏览器不支持transform属性时，通过改变top/left完成滑动动画*/
+            position: relative;
+            /*必须，关系到单个page能否全屏显示*/
+            height: 100%;
+        }
+
+        .section {
+            /*有背景图时必须，关系到背景图能够全屏显示*/
+            background-color: #000;
+            background-size: cover;
+            background-position: 50% 50%;
+        }
+
+        /*非必需，只是用来设置背景图，id不会被插件用到*/
+        #section0 {
+            background-color: #EAEEF4;
+        }
+
+        #section1 {
+            background-image: url(img/img2.jpg);
+        }
+
+        #section2 {
+            background-image: url(img/img3.jpg);
+        }
+
+        #section3 {
+            background-image: url(img/img4.jpg);
+        }
+
+        /*以下样式用来设置slider样式，可自行修改*/
+        .pages {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            list-style: none;
+        }
+
+        .pages li {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+            margin: 15px 0 0 7px;
+        }
+
+        .pages li.active {
+            /* margin-left: 15px; */
+            margin-left: 4px;
+            width: 14px;
+            height: 14px;
+            border: 4px solid #FFFFFF;
+            background: none;
+        }
+
+        .header {
+            display: flex;
+            height: 83px;
+            background-color: pink;
+            width: 100%;
+            text-align: center;
+            align-items: center;
+            background-color: #ECEEF2;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .title0 a:hover,
+        .title2 a:hover,
+        .title3 a:hover {
+            color: #fd5e53;
+        }
+
+        .title1 a {
+            color: #ECEEF2;
+        }
+
+        .title0 {
+            flex: 1.4;
+            color: rgba(0, 14, 72, 1);
+            text-align: left;
+            padding-left: 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .title3 a,
+        .title2 a {
+            color: rgba(0, 14, 72, 1);
+        }
+
+        .title1 {
+            flex: 0.4;
+            background: url(./img/dev.png) no-repeat center;
+            color: #ECEEF2;
+        }
+
+        .title2 {
+            flex: 0.115;
+            white-space: nowrap;
+            color: rgba(0, 14, 72, 1);
+            font-family: Helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .title3 {
+            flex: 0.115;
+            color: rgba(0, 14, 72, 1);
+            font-family: Helvetica;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 40px;
+        }
+
+        /* 页面主体 */
+        .main {
+            display: flex;
+        }
+
+        .left {
+            flex: 1.1;
+            box-sizing: border-box;
+            height: 400px;
+            position: relative;
+        }
+
+        .right {
+            flex: 0.9;
+        }
+
+        .descripe {
+            height: 240px;
+            font-size: 3.94rem;
+            font-family: Helvetica;
+            color: rgba(0, 14, 72, 1);
+            line-height: 80px;
+            /* position: absolute;
+            left: 50%;
+            transform: translateX(-50%); */
+            overflow: hidden;
+            width: 100%;
+            padding-left: 23%;
+            font-weight: bold;
+        }
+
+        .line {
+            width: 65px;
+            height: 3px;
+            background: rgba(0, 14, 72, 1);
+            margin-left: 23%;
+            margin-top: 55px;
+        }
+
+        .descripeNum {
+            height: 24px;
+            font-size: 18px;
+            font-family: Helvetica;
+            color: rgba(0, 14, 72, 1);
+            line-height: 24px;
+            position: absolute;
+            right: 18%;
+            top: 52%;
+            font-weight: bold;
+        }
+
+        /* 屏幕尺寸低于1200 隐藏descripeNum */
+        @media only screen and (max-width: 1200px) {
+            .descripeNum {
+                display: none;
+            }
+        }
+
+        .descripe2 {
+            margin-top: 55px;
+            height: 48px;
+            font-size: 18px;
+            font-family: Helvetica;
+            color: rgba(0, 14, 72, 1);
+            line-height: 24px;
+            padding-left: 23%;
+        }
+
+        .main {
+            margin-top: 24px;
+        }
+
+        .right {
+            background-color: #fff;
+            margin-left: 8px;
+            border-radius: 23px 0 0 23px;
+            padding: 20px 0 20px 20px;
+            position: relative;
+            padding-left: 1.133333rem;
+        }
+
+        .right img {
+            width: 100%;
+            height: 100%;
+            border-radius: 23px 0 0 23px;
+        }
+
+        .picDot {
+            position: absolute;
+            top: 50%;
+            margin-left: 5px;
+            transform: translateY(-50%);
+        }
+
+        .active {
+            color: black !important;
+        }
+
+        .allProduct {
+            width: 190px;
+            height: 50px;
+            background: rgba(246, 86, 126, 1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            position: absolute;
+            top: 120%;
+            left: 40%;
+        }
+
+        .pages {
+            left: 10px !important;
+        }
+
+        .pages li.active {
+            border: 4px solid rgba(0, 14, 72, 1);
+            /* background-color: rgba(0, 14, 72, 1) !important; */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 插件基本结构 -->
+    <div id="container" data-XSwitch>
+        <div class="sections">
+            <div class="section" id="section0">
+                <div class="header">
+                    <div class="title0"><a href="https://zhujingyu.com">Tyrant</a></div>
+                    <div class="title1"><a href="#">-</a></div>
+                    <div class="title2"><a href="#">Join Us</a></div>
+                    <div class="title3"><a href="#">Login</a></div>
+                </div>
+                <div class="main">
+                    <div class="left">
+                        <div class="descripe">How Does An</br> Lcd Scre</br> Work</div>
+                        <div class="descripeNum">01/03</div>
+                        <div class="line"></div>
+                        <div class="descripe2">5 Reasons To Choose A Notebook</br> Over A Computer Desktop</div>
+                        <div class="allProduct">All Porduct</div>
+                    </div>
+                    <div class="right">
+                        <img src="img/bose1.png" alt="">
+                        <ul class="picDot">
+                            <li></li>
+                            <li class="active"></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="section1"></div>
+            <div class="section" id="section2"></div>
+            <div class="section" id="section3">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="js/XSwitch.min.js" charset="utf-8"></script>
+</body>
+
+</html>
